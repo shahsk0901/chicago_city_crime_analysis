@@ -42,7 +42,7 @@ object Crimes {
 	  
 	  
 	  // Defining spark context and configuration
-	  val conf = new SparkConf().setAppName("Crimes").setMaster("local[2]")
+	  val conf = new SparkConf().setAppName("Crimes").setMaster("local[1]")
 		val sc = new SparkContext(conf)
 		
 		// Reading Input and filtering out any rows that has a null value
@@ -87,12 +87,23 @@ object Crimes {
 		    case ((record1,r1), (record2,r2)) => (add(record1,record2),r1+r2) 
 		  }
 		  
+		  var calculateNewClusterCentroid = calculateClusters.map { 
+		    case(clusterIndex, (clusterInfo,totalRecords)) => (clusterIndex, (clusterInfo._1/totalRecords,
+		        clusterInfo._2/totalRecords,
+		        clusterInfo._3/totalRecords,
+		        clusterInfo._4/totalRecords))
+		  }
 		  
+		  calculateNewClusterCentroid = calculateNewClusterCentroid.sortBy(_._1)
+		  
+		  
+		  println("Iteration number: " + currentIteration + "\n")
+		  calculateNewClusterCentroid.foreach(println)
 		  
 		  currentIteration+=1
 		}
 	  
-	  closestTo.foreach(println)
+	  //closestTo.foreach(println)
 		
 		//val vectors = transformInput.map(input => Vectors.dense(input._1,input._2,input._3,input._4))
 	  
