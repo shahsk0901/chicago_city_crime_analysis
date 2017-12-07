@@ -74,8 +74,10 @@ object Crimes {
 		
 		var iterations = 20
 	  var currentIteration = 1
-	 
-		while (currentIteration <= iterations ) {
+	  val convergence = 0.05
+	  var dist = Double.PositiveInfinity
+		
+	  while ( dist >  convergence) {
 		  
 		  closestTo = transformInput.map(record => { 
 		    var clusterAssigned = closestToCluster(record, clusters)
@@ -92,14 +94,36 @@ object Crimes {
 		        clusterInfo._2/totalRecords,
 		        clusterInfo._3/totalRecords,
 		        clusterInfo._4/totalRecords))
-		  }
+		  }.collectAsMap()
 		  
-		  calculateNewClusterCentroid = calculateNewClusterCentroid.sortBy(_._1)
+		  //calculateNewClusterCentroid = calculateNewClusterCentroid.sortBy(_._1)
+		  
+		  //println("Iteration number: " + currentIteration + "\n")
+		  //calculateNewClusterCentroid.foreach(println)
 		  
 		  
-		  println("Iteration number: " + currentIteration + "\n")
+		  println("\n\n\n\nIteration " + currentIteration + ": ")
+		  
+		  println("\n\nInitials Clusters: ")
+		  clusters.foreach(println)
+		  
+		  println("\n\nCalculated: ")
 		  calculateNewClusterCentroid.foreach(println)
 		  
+		  dist = 0.0
+		  for (i <- 1 to 10) {
+        dist += calculateDistance(clusters(i-1), calculateNewClusterCentroid(i))
+      }
+		  
+		  
+		  // Assign new cluster centroids
+		  for(i <- 1 to clusters.length) {
+		    clusters(i-1) = calculateNewClusterCentroid(i)
+		  }
+		  
+		  println("\n\nNew Clusters: ")
+		  clusters.foreach(println)
+
 		  currentIteration+=1
 		}
 	  
