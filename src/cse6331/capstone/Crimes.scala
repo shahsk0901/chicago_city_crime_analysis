@@ -50,7 +50,8 @@ object Crimes {
       clusterAssigned
 	  }
 	  
-	  def runKmeans(transformInput: RDD[(Double,Double,Double,Double)],sc: SparkContext): (RDD[(Double,Double,Double,Double)],RDD[(Int)]) = { 
+	  def runKmeans(transformInput: RDD[(Double,Double,Double,Double)],sc: SparkContext): 
+	  (RDD[((Double,Double,Double,Double),Int)],RDD[(Int)]) = { 
 	    
   	  // Initializing the RDD to assign the cluster to each point
   		var closestTo = transformInput.map(x => (0,(x,0)))
@@ -111,10 +112,13 @@ object Crimes {
   
   		  currentIteration+=1
   	  }
-		
-		val returnClusters = sc.parallelize(clusters)
-		
-		(returnClusters,closestTo.map(f=>f._1))
+  		var i = 0
+  		val returnClusters = sc.parallelize(clusters.map(f=> {
+  		  i+=1
+  		  ((f._1,f._2,f._3,f._4),i)
+  		}))
+  		
+  		(returnClusters,closestTo.map(f=>f._1))
 	  }
 
 
