@@ -334,6 +334,7 @@ object Crimes {
 		
 		sc.stop()
 		
+		
 	  fw = new FileWriter(args(2),true)
 	  fw.write("\n\n---------------------------------------------------------------------------------------------------\nProgram Stop")
 	  fw.write("\nLogs written to '.out' file.")
