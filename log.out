@@ -1375,3 +1375,5 @@ Results analyzed are as follows:
 17/12/20 17:28:55 INFO SparkContext: Successfully stopped SparkContext
 17/12/20 17:28:55 INFO ShutdownHookManager: Shutdown hook called
 17/12/20 17:28:55 INFO ShutdownHookManager: Deleting directory /tmp/spark-a015474b-5543-4400-ad3a-3d62b56ae8b6
+
+
